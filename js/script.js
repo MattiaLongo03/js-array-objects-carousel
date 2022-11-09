@@ -26,33 +26,36 @@ const arrImages = [
 	},
 ];
 
-console.table(arrImages);
-
-const album = document.getElementById("album");
 
 const eleSliderViewer = document.querySelector('.slider-viewer');
 const eleSliderThumbs = document.querySelector('.thumbs');
 const eleBtnLeft = document.querySelector('.btn-left');
 const eleBtnRight = document.querySelector('.btn-right');
+const timeSlider = 1.5 * 1000;
+let direction = 1
 
 for (let i = 0; i < arrImages.length; i++) {
+	const eleSlide = document.createElement('div');
+	eleSlide.classList.add('slide');
+	
 	const eleImg = document.createElement('img');
-	const eleDiv = document.createElement('div');
-	const eleP = document.createElement('p');
-	const eleH2 = document.createElement('h2');
-	eleImg.src = arrImages[i].image;
-	eleH2.innerHTML = arrImages[i].title;
-	eleP.innerHTML = arrImages[i].text;
-	eleImg.classList.add('eleDiv');
+	eleImg.src =  arrImages[i].image; 
+	eleImg.alt = arrImages[i].title; 
+	
+	const eleText = document.createElement('div');
+	eleText.classList.add('text');
+	eleText.innerHTML = `
+		<h2>${arrImages[i].title}</h2>
+		<p>${arrImages[i].text}</p>
+	`; 
+
+	eleSlide.append(eleImg); 
+	eleSlide.append(eleText);
 
 	if (i === 0) {
-		eleImg.classList.add('active');
+		eleSlide.classList.add('active');
 	}
-	eleSliderViewer.append(eleDiv);
-	eleDiv.append(eleImg);
-	eleDiv.append(eleH2);
-	eleDiv.append(eleP);
-
+	eleSliderViewer.append(eleSlide);
 
 	const eleThumb = document.createElement('img');
 	eleThumb.src = arrImages[i].image;
@@ -63,25 +66,63 @@ for (let i = 0; i < arrImages.length; i++) {
 	eleSliderThumbs.append(eleThumb);
 }
 
-const listEleImg = document.querySelectorAll('.slider-img'); 
+
+
+let idInterval = setInterval(() => {
+	if (direction > 0) {
+		moveRight();
+	} else {
+		moveLeft()
+	}
+}, timeSlider);
+
+document.querySelector('.btn-invert').addEventListener('click', () => direction *= -1);
+
+document.querySelector('.btn-start-stop').addEventListener('click', function() {
+	if (this.dataset.functionality === 'stop') {
+		console.log('stoppato');
+		clearInterval(idInterval);
+		this.innerHTML = 'Start';
+		this.dataset.functionality = 'start';
+	} else {
+		console.log('avviato');
+		idInterval = setInterval(() => {
+			if (direction > 0) {
+				moveRight();
+			} else {
+				moveLeft();
+			}
+		}, timeSlider);
+		this.innerHTML = 'Stop';
+		this.dataset.functionality = 'stop';
+	}
+})
+
+
+const listEleImg = document.querySelectorAll('.slide'); 
 const listThumbs = document.querySelectorAll('.thumb-img');
 
 let activeIndex = 0;
 
-eleBtnRight.addEventListener('click', function () {
+eleBtnRight.addEventListener('click', moveRight);
+
+eleBtnLeft.addEventListener('click', moveLeft);
+
+function moveRight() {
 	listEleImg[activeIndex].classList.remove('active');
 	listThumbs[activeIndex].classList.remove('active');
 
 	activeIndex++;
+	
 	if (activeIndex === listEleImg.length) {
 		activeIndex = 0;
 	}
 
 	listEleImg[activeIndex].classList.add('active');
 	listThumbs[activeIndex].classList.add('active');
-});
+};
 
-eleBtnLeft.addEventListener('click', function () {
+function moveLeft() {
 	listEleImg[activeIndex].classList.remove('active');
 	listThumbs[activeIndex].classList.remove('active');
 
@@ -92,4 +133,4 @@ eleBtnLeft.addEventListener('click', function () {
 
 	listEleImg[activeIndex].classList.add('active');
 	listThumbs[activeIndex].classList.add('active');
-});
+}

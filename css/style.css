@@ -5,22 +5,28 @@
 }
 
 body {
-	display: flex;
 	height: 100vh;
+}
+
+.container-blur {
+	display: flex;
+	height: 100%;
+	backdrop-filter: blur(20px);
 }
 
 .slider {
 	margin: auto;
 	height: 80%;
 	width: 60%;
-	max-width: 600px;
-	max-height: 500px;
+	max-height: 520px;
 	background-color: salmon;
+	display: flex;
+	margin-top: 200px;
 }
 
 .slider .slider-viewer {
 	position: relative;
-	height: 80%;
+	width: 80%;
 }
 
 .slider .controls {
@@ -31,6 +37,7 @@ body {
 	align-items: center;
 	height: 100%;
 	z-index: 10;
+	flex-direction: column;
 }
 
 .btn-left, .btn-right {
@@ -53,30 +60,44 @@ body {
 	visibility: hidden;
 }
 
-.slider .slider-img {
+.slider .slide {
 	position: absolute;
 	inset: 0;
 	display: none;
+	width: 100%;
+	height: 100%;
+}
+
+.slider .slide img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	object-position: center;
 }
 
-.slider .slider-img.active {
+.slider .slide .text {
+	position: absolute;
+	inset: 0;
+	padding: 1.5rem;
+	text-align: right;
+}
+
+.slider .slide.active {
 	display: block;
 }
 
 .slider .thumbs {
 	position: relative;
 	display: flex;
-	height: 20%;
+	width: 20%;
+	flex-direction: column;
 }
 
 .slider .thumb-img {
 	flex: 1 0 0;
 	min-width: 0;
-	height: 100%;
+	width: 100%;
+	height: 20%;
 	object-fit: cover;
 	object-position: center;
 	filter: brightness(.4);
@@ -85,4 +106,18 @@ body {
 .slider .thumb-img.active {
 	border: 5px solid white;
 	filter: brightness(1);
+}
+
+.text {
+	color: white;
+}
+
+.bottoni {
+	display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.btn-start-stop {
+	margin-right: 10px;
 }
